@@ -101,3 +101,13 @@ GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'banker'@'localhost'
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `customer`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DiamondBankDB`;
+INSERT INTO `customer` (`id`, `first_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `active`, `create_date`, `last_update`, `address`, `address2`, `city`, `state`, `zipcode`, `role`) VALUES (1, 'test', 'test', 'test', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 'test@test.com', '000-000-0000', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+COMMIT;
+
