@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `password` VARCHAR(200) NULL,
   `email` VARCHAR(200) NULL,
   `phone_number` VARCHAR(45) NULL,
-  `active` TINYINT NULL,
+  `active` TINYINT NULL DEFAULT 1,
   `create_date` DATETIME NULL,
   `last_update` TIMESTAMP NULL,
   `address` VARCHAR(500) NULL,
@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `city` VARCHAR(100) NULL,
   `state` VARCHAR(100) NULL,
   `zipcode` VARCHAR(45) NULL,
+  `role` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))

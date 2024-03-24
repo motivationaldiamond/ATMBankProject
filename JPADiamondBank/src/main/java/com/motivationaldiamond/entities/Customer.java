@@ -50,6 +50,8 @@ public class Customer {
 	private String state;
 
 	private String zipcode;
+	
+	private String role;
 
 	@OneToMany(mappedBy = "customer")
 	private List<Account> accounts;
@@ -180,6 +182,14 @@ public class Customer {
 
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override
