@@ -12,6 +12,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private UserRepository userRepo;
 
