@@ -10,4 +10,14 @@ public interface AccountService {
 	Account createAccount(Account account);
 
 	List<TransactionRecord> getAccountTransactions(long accountNumber);
+
+	boolean deleteAccount(int userId, long accountNumber);
+
+	boolean disableAccount(int userId, long accountNumber);
+
+	boolean updateAccountStatus(int userId, long accountNumber, String newStatus);
+
+	String getAccountStatus(int userId, long accountNumber);
+
+	List<Account> getAllUserAccounts(int userId);
 }

@@ -60,4 +60,78 @@ public class AccountServiceImpl implements AccountService {
 		// Retrieve transaction records associated with the specified account number
 		return transactionRecordRepository.findByAccount_AccountNumber(accountNumber);
 	}
+
+	@Override
+    public boolean deleteAccount(int userId, long accountNumber) {
+        // Retrieve the account to delete
+        Account account = accountRepository.findByUser_IdAndAccountNumber(userId, accountNumber);
+
+        // Check if the account exists
+        if (account != null) {
+            // Delete the account from the database
+            accountRepository.delete(account);
+            return true; // Return true indicating successful deletion
+        } else {
+            return false; // Return false indicating account not found
+        }
+    }
+
+    @Override
+    public boolean disableAccount(int userId, long accountNumber) {
+        // Retrieve the account to disable
+        Account account = accountRepository.findByUser_IdAndAccountNumber(userId, accountNumber);
+
+        // Check if the account exists
+        if (account != null) {
+            // Update the account status to "DISABLED"
+            account.setAccountStatus("DISABLED");
+            // Save the updated account to the database
+            accountRepository.save(account);
+            return true; // Return true indicating successful disablement
+        } else {
+            return false; // Return false indicating account not found
+        }
+    }
+    
+    @Override
+    public boolean updateAccountStatus(int userId, long accountNumber, String newStatus) {
+        // Retrieve the account to update
+        Account account = accountRepository.findByUser_IdAndAccountNumber(userId, accountNumber);
+
+        // Check if the account exists
+        if (account != null) {
+            // Update the account status
+            account.setAccountStatus(newStatus);
+            // Save the updated account to the database
+            accountRepository.save(account);
+            return true; // Return true indicating successful status update
+        } else {
+            return false; // Return false indicating account not found
+        }
+    }
+
+    @Override
+    public String getAccountStatus(int userId, long accountNumber) {
+        // Retrieve the account based on the user ID and account number
+        Account account = accountRepository.findByUser_IdAndAccountNumber(userId, accountNumber);
+
+        // Check if the account exists
+        if (account != null) {
+            // Return the account's status
+            return account.getAccountStatus();
+        } else {
+            // If the account does not exist, return null
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Account> getAllUserAccounts(int userId) {
+        // Retrieve all accounts associated with the provided user ID
+        List<Account> userAccounts = accountRepository.findByUser_Id(userId);
+
+        // Return the list of user accounts
+        return userAccounts;
+    }
+
 }
