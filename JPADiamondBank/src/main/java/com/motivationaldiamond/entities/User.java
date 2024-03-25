@@ -12,17 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Customer {
-
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
+	private int id;
 
 	private String username;
 
@@ -30,10 +23,18 @@ public class Customer {
 
 	private String email;
 
+	@Column(name = "first_name")
+	private String firstName;
+
+	@Column(name = "last_name")
+	private String lastName;
+
+	private boolean enabled;
+
+	private String role;
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
-
-	private boolean active;
 
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
@@ -50,34 +51,43 @@ public class Customer {
 	private String state;
 
 	private String zipcode;
-	
-	private String role;
 
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(mappedBy = "user")
 	private List<Account> accounts;
 
-	public long getId() {
+	public User() {
+		super();
+	}
+
+	public User(int id, String username, String password, String email, String firstName, String lastName,
+			boolean enabled, String role, String phoneNumber, LocalDateTime createDate, LocalDateTime lastUpdate,
+			String address, String address2, String city, String state, String zipcode, List<Account> accounts) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.enabled = enabled;
+		this.role = role;
+		this.phoneNumber = phoneNumber;
+		this.createDate = createDate;
+		this.lastUpdate = lastUpdate;
+		this.address = address;
+		this.address2 = address2;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
+		this.accounts = accounts;
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getUsername() {
@@ -104,20 +114,44 @@ public class Customer {
 		this.email = email;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -184,18 +218,9 @@ public class Customer {
 		this.accounts = accounts;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(accounts, active, address, address2, city, createDate, email, firstName, id, lastName,
-				lastUpdate, password, phoneNumber, state, username, zipcode);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -206,25 +231,17 @@ public class Customer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
-		return Objects.equals(accounts, other.accounts) && active == other.active
-				&& Objects.equals(address, other.address) && Objects.equals(address2, other.address2)
-				&& Objects.equals(city, other.city) && Objects.equals(createDate, other.createDate)
-				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName) && id == other.id
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(lastUpdate, other.lastUpdate)
-				&& Objects.equals(password, other.password) && Objects.equals(phoneNumber, other.phoneNumber)
-				&& Objects.equals(state, other.state) && Objects.equals(username, other.username)
-				&& Objects.equals(zipcode, other.zipcode);
+		User other = (User) obj;
+		return id == other.id;
 	}
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", phoneNumber=" + phoneNumber + ", active=" + active
-				+ ", createDate=" + createDate + ", lastUpdate=" + lastUpdate + ", address=" + address + ", address2="
-				+ address2 + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode + ", accounts=" + accounts
-				+ "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", enabled=" + enabled + ", role=" + role
+				+ ", phoneNumber=" + phoneNumber + ", createDate=" + createDate + ", lastUpdate=" + lastUpdate
+				+ ", address=" + address + ", address2=" + address2 + ", city=" + city + ", state=" + state
+				+ ", zipcode=" + zipcode + "]";
 	}
 
-	
 }

@@ -10,9 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-public class Transaction {
+@Table(name = "transaction_record")
+public class TransactionRecord {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,7 +98,7 @@ public class Transaction {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Transaction other = (Transaction) obj;
+		TransactionRecord other = (TransactionRecord) obj;
 		return Objects.equals(account, other.account)
 				&& Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount) && id == other.id
 				&& Objects.equals(timestamp, other.timestamp)

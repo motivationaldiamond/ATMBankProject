@@ -16,19 +16,19 @@ CREATE SCHEMA IF NOT EXISTS `DiamondBankDB` DEFAULT CHARACTER SET DEFAULT ;
 USE `DiamondBankDB` ;
 
 -- -----------------------------------------------------
--- Table `customer`
+-- Table `user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `customer` ;
+DROP TABLE IF EXISTS `user` ;
 
-CREATE TABLE IF NOT EXISTS `customer` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(100) NULL,
   `last_name` VARCHAR(100) NULL,
   `username` VARCHAR(100) NOT NULL,
   `password` VARCHAR(200) NULL,
   `email` VARCHAR(200) NULL,
   `phone_number` VARCHAR(45) NULL,
-  `active` TINYINT NULL DEFAULT 1,
+  `enabled` TINYINT NOT NULL DEFAULT 1,
   `create_date` DATETIME NULL,
   `last_update` TIMESTAMP NULL,
   `address` VARCHAR(500) NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `city` VARCHAR(100) NULL,
   `state` VARCHAR(100) NULL,
   `zipcode` VARCHAR(45) NULL,
-  `role` VARCHAR(45) NULL,
+  `role` VARCHAR(100) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
@@ -55,13 +55,13 @@ CREATE TABLE IF NOT EXISTS `account` (
   `account_type` VARCHAR(45) NULL,
   `transaction_limit` VARCHAR(45) NULL,
   `account_status` VARCHAR(45) NULL,
-  `customer_id` INT NOT NULL,
-  PRIMARY KEY (`account_number`, `customer_id`),
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`account_number`, `user_id`),
   UNIQUE INDEX `account_number_UNIQUE` (`account_number` ASC),
-  INDEX `fk_account_customer_idx` (`customer_id` ASC),
+  INDEX `fk_account_customer_idx` (`user_id` ASC),
   CONSTRAINT `fk_account_customer`
-    FOREIGN KEY (`customer_id`)
-    REFERENCES `customer` (`id`)
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -70,11 +70,11 @@ PACK_KEYS = Default;
 
 
 -- -----------------------------------------------------
--- Table `transaction`
+-- Table `transaction_record`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `transaction` ;
+DROP TABLE IF EXISTS `transaction_record` ;
 
-CREATE TABLE IF NOT EXISTS `transaction` (
+CREATE TABLE IF NOT EXISTS `transaction_record` (
   `id` INT NOT NULL,
   `transaction_type` VARCHAR(100) NULL,
   `amount` DECIMAL(12,2) NULL,
@@ -103,11 +103,11 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `customer`
+-- Data for table `user`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `DiamondBankDB`;
-INSERT INTO `customer` (`id`, `first_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `active`, `create_date`, `last_update`, `address`, `address2`, `city`, `state`, `zipcode`, `role`) VALUES (1, 'test', 'test', 'test', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 'test@test.com', '000-000-0000', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `password`, `email`, `phone_number`, `enabled`, `create_date`, `last_update`, `address`, `address2`, `city`, `state`, `zipcode`, `role`) VALUES (1, 'test', 'test', 'test', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 'test@test.com', '000-000-0000', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 

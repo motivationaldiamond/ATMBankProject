@@ -12,34 +12,37 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
-
 @Entity
 public class Account {
 
 	@Id
 	@Column(name = "account_number")
 	private long accountNumber;
-	
+
 	private int pin;
-	
+
 	private double balance;
-	
+
 	@Column(name = "account_type")
 	private String accountType;
-	
+
 	@Column(name = "transaction_limit")
 	private double transactionLimit;
-	
+
 	@Column(name = "account_status")
 	private String accountStatus;
-	
+
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	private Customer customer;
-	
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	@OneToMany(mappedBy = "account")
-    private List<Transaction> transactions;
+	private List<TransactionRecord> transactionRecords;
+
+	public Account() {
+
+	}
 
 	public long getAccountNumber() {
 		return accountNumber;
@@ -89,26 +92,25 @@ public class Account {
 		this.accountStatus = accountStatus;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public User getUser() {
+		return user;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public List<Transaction> getTransactions() {
-		return transactions;
+	public List<TransactionRecord> getTransactionRecords() {
+		return transactionRecords;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setTransactionRecords(List<TransactionRecord> transactionRecords) {
+		this.transactionRecords = transactionRecords;
 	}
 
 	@Override
 	public int hashCode() {
-	    return Objects.hash(accountNumber, accountStatus, accountType, balance, customer, pin, transactionLimit,
-	            transactions);
+		return Objects.hash(accountNumber);
 	}
 
 	@Override
@@ -120,28 +122,14 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		return accountNumber == other.accountNumber && Objects.equals(accountStatus, other.accountStatus)
-				&& Objects.equals(accountType, other.accountType)
-				&& Double.doubleToLongBits(balance) == Double.doubleToLongBits(other.balance)
-				&& Objects.equals(customer, other.customer) && pin == other.pin
-				&& Double.doubleToLongBits(transactionLimit) == Double.doubleToLongBits(other.transactionLimit)
-				&& Objects.equals(transactions, other.transactions);
+		return accountNumber == other.accountNumber;
 	}
 
 	@Override
 	public String toString() {
-	    String customerInfo = (customer != null) ? ("Customer [id=" + customer.getId() + ", firstName=" + customer.getFirstName() + "]") : "null";
-	    return "Account [accountNumber=" + accountNumber +
-	            ", pin=" + pin +
-	            ", balance=" + balance +
-	            ", accountType=" + accountType +
-	            ", transactionLimit=" + transactionLimit +
-	            ", accountStatus=" + accountStatus +
-	            ", customer=" + customerInfo +
-	            ", transactions=" + transactions +
-	            "]";
+		return "Account [accountNumber=" + accountNumber + ", pin=" + pin + ", balance=" + balance + ", accountType="
+				+ accountType + ", transactionLimit=" + transactionLimit + ", accountStatus=" + accountStatus
+				+ ", user=" + user + ", transactionRecords=" + transactionRecords + "]";
 	}
 
-	
-	
 }
