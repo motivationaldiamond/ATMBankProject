@@ -20,4 +20,8 @@ public interface AccountService {
 	String getAccountStatus(int userId, long accountNumber);
 
 	List<Account> getAllUserAccounts(int userId);
+
+	boolean updateAccountBalance(int userId, long accountNumber, Double newBalance);
+
+	boolean updateAccountPin(int userId, long accountNumber, Integer newPin);
 }

@@ -1,6 +1,7 @@
 package com.motivationaldiamond.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.motivationaldiamond.entities.Account;
@@ -31,6 +31,7 @@ public class AccountController {
 	@Autowired
 	private UserService userService;
 
+	// view all user accounts
 	@GetMapping("/{userId}/accounts")
 	public ResponseEntity<List<Account>> getAllUserAccounts(@PathVariable("userId") int userId) {
 		// Call the service method to retrieve all accounts for the specified user
@@ -46,6 +47,7 @@ public class AccountController {
 		}
 	}
 
+	// create new account from the user
 	@PostMapping("/{userId}/accounts/create")
 	public ResponseEntity<?> createAccount(@PathVariable("userId") int userId, @RequestBody Account account) {
 		// Retrieve the user object associated with the provided userId
@@ -72,6 +74,7 @@ public class AccountController {
 		}
 	}
 
+	//view transactions from account number
 	@GetMapping("/accounts/{accountNumber}/transactions")
 	public ResponseEntity<?> viewAccountTransactions(@PathVariable("accountNumber") long accountNumber) {
 		// Call the service method to retrieve account transactions
@@ -86,7 +89,7 @@ public class AccountController {
 		}
 	}
 
-	// Delete Account
+	// Delete Account from user
 	@DeleteMapping("/{userId}/accounts/{accountNumber}")
 	public ResponseEntity<?> deleteAccount(@PathVariable("userId") int userId,
 			@PathVariable("accountNumber") long accountNumber) {
@@ -103,7 +106,7 @@ public class AccountController {
 		}
 	}
 
-	// Disable Account
+	// Disable Account from user
 	@PutMapping("/{userId}/accounts/{accountNumber}/disable")
 	public ResponseEntity<?> disableAccount(@PathVariable("userId") int userId,
 			@PathVariable("accountNumber") long accountNumber) {
@@ -120,9 +123,13 @@ public class AccountController {
 		}
 	}
 
+	// change account status from user
 	@PutMapping("/{userId}/accounts/{accountNumber}/status")
 	public ResponseEntity<?> updateAccountStatus(@PathVariable("userId") int userId,
-			@PathVariable("accountNumber") long accountNumber, @RequestParam("status") String newStatus) {
+			@PathVariable("accountNumber") long accountNumber, @RequestBody Map<String, String> requestBody) {
+
+		// Extract the status from the request body
+		String newStatus = requestBody.get("status");
 
 		// Call the service method to update the account status
 		boolean updated = accountService.updateAccountStatus(userId, accountNumber, newStatus);
@@ -137,7 +144,8 @@ public class AccountController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
+	
+	// view all user accounts status
 	@GetMapping("/{userId}/accounts/{accountNumber}/status")
 	public ResponseEntity<String> getAccountStatus(@PathVariable("userId") int userId,
 			@PathVariable("accountNumber") long accountNumber) {
@@ -154,5 +162,44 @@ public class AccountController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@PutMapping("/{userId}/accounts/{accountNumber}/pin")
+	public ResponseEntity<?> updateAccountPin(@PathVariable("userId") int userId,
+	        @PathVariable("accountNumber") long accountNumber, @RequestBody Map<String, Integer> requestBody) {
+
+	    Integer newPin = requestBody.get("pin");
+
+	    // Call the service method to update the account pin
+	    boolean updated = accountService.updateAccountPin(userId, accountNumber, newPin);
+
+	    // Check if the account pin was successfully updated
+	    if (updated) {
+	        // Return a success response with a 200 OK status
+	        return ResponseEntity.ok().build();
+	    } else {
+	        // If the account was not found or the pin update failed, return a 404 Not Found status
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
+	@PutMapping("/{userId}/accounts/{accountNumber}/balance")
+	public ResponseEntity<?> updateAccountBalance(@PathVariable("userId") int userId,
+	        @PathVariable("accountNumber") long accountNumber, @RequestBody Map<String, Double> requestBody) {
+
+	    Double newBalance = requestBody.get("balance");
+
+	    // Call the service method to update the account balance
+	    boolean updated = accountService.updateAccountBalance(userId, accountNumber, newBalance);
+
+	    // Check if the account balance was successfully updated
+	    if (updated) {
+	        // Return a success response with a 200 OK status
+	        return ResponseEntity.ok().build();
+	    } else {
+	        // If the account was not found or the balance update failed, return a 404 Not Found status
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
 
 }
